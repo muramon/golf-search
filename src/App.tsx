@@ -54,7 +54,7 @@ export default function App() {
               color="text.primary"
               gutterBottom
             >
-              ゴルフクラブ横断検索のゴルフサーチ
+              ゴルフクラブをまとめて検索
             </Typography>
             <Typography variant="h5" align="center" color="text.secondary" paragraph>
               comming soon...
