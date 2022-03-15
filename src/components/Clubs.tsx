@@ -3,19 +3,24 @@ import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
 import ListSubheader from '@mui/material/ListSubheader';
 import IconButton from '@mui/material/IconButton';
-import InfoIcon from '@mui/icons-material/Info';
+import ArrowCircleRightSharpIcon from '@mui/icons-material/ArrowCircleRightSharp';
+import { useNavigate, Link } from 'react-router-dom';
 
 export default function ClubList() {
+  const navigate = useNavigate();
+
   return (
-    <ImageList sx={{ width: 500, height: 450 }}>
+    <ImageList sx={{ height: 450,
+      display: "grid",
+      gridTemplateColumns:  "repeat(4, 1fr)"}}>
       <ImageListItem key="Subheader" cols={2}>
         <ListSubheader component="div">December</ListSubheader>
       </ImageListItem>
       {itemData.map((item) => (
         <ImageListItem key={item.img}>
           <img
-            src={`${item.img}?w=248&fit=crop&auto=format`}
-            srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
+            src={item.img}
+            srcSet={item.img}
             alt={item.title}
             loading="lazy"
           />
@@ -26,9 +31,9 @@ export default function ClubList() {
               <IconButton
                 sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
                 aria-label={`info about ${item.title}`}
-                onClick={() => console.log('info icon is clicked')}
+                onClick={() => navigate("detail")}
               >
-                <InfoIcon />
+                <ArrowCircleRightSharpIcon />
               </IconButton>
             }
           />
@@ -40,7 +45,7 @@ export default function ClubList() {
 
 const itemData = [
   {
-    img: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e',
+    img: 'https://thumbnail.image.rakuten.co.jp/@0_mall/victoriagolf/cabinet/1/3930502_55/7716754_m.jpg?_ex=240x240',
     title: 'Breakfast',
     author: '@bkristastucchio',
     price: 1000,
