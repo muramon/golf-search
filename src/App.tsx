@@ -12,6 +12,7 @@ import Toolbar from '@mui/material/Toolbar';
 import SportsGolfIcon from '@mui/icons-material/SportsGolf';
 import Copyright from './components/Copyright'
 import Search from './components/Search'
+import ClubList from './components/Clubs'
 
 export default function App() {
   //primaryとsecondaryで、色を指定します
@@ -20,7 +21,7 @@ export default function App() {
       primary: {
         main: "#424242",
       },
-  　　secondary: {
+      secondary: {
         main: "#9e9e9e",
       },
     },
@@ -67,6 +68,7 @@ export default function App() {
             >
               <Search></Search>
             </Stack>
+            <ClubList />
           </Container>
         </Box>
         
