@@ -31,7 +31,9 @@ export default function ClubList() {
               <IconButton
                 sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
                 aria-label={`info about ${item.title}`}
-                onClick={() => navigate("detail")}
+                onClick={() => navigate("detail", { state: { src: item.img, 
+                                                             price: item.price,
+                                                             title: item.title } })}
               >
                 <ArrowCircleRightSharpIcon />
               </IconButton>
