@@ -5,9 +5,30 @@ import ListSubheader from '@mui/material/ListSubheader';
 import IconButton from '@mui/material/IconButton';
 import ArrowCircleRightSharpIcon from '@mui/icons-material/ArrowCircleRightSharp';
 import { useNavigate, Link } from 'react-router-dom';
+import axios, { AxiosResponse } from "axios";
+import React, { useState } from 'react';
+
+type Item= {
+  rank: number;
+  name: string;
+  img_url: string;
+  affilicate_url: string;
+  description: string;
+  price: number;
+};
 
 export default function ClubList() {
   const navigate = useNavigate();
+  const [item, setItems] = useState<Item[]>([]);
+  const resdata = axios.get("https://app.rakuten.co.jp/services/api/IchibaItem/Ranking/20170628?", {
+                    params : {
+                        'applicationId': '1036157472940221185',
+                        'affiliateId' : '25de4e9e.e4d4424e.25de4e9f.207712e9',
+                        'genreId' : '201706',
+                        'period' : 'realtime'                     
+                    }}).then(res => {
+                        console.log(res.data.Items);
+                      });
 
   return (
     <ImageList sx={{ height: 450,
@@ -56,7 +77,7 @@ const itemData = [
     featured: true,
   },
   {
-    img: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d',
+    img: 'https://thumbnail.image.rakuten.co.jp/@0_mall/kotobukigolf/cabinet/image8/10052619-1.jpg?_ex=128x128',
     title: 'Burger',
     author: '@rollelflex_graphy726',
     price: 1000,
