@@ -1,4 +1,4 @@
-import { memo, useState, VFC } from "react"
+import { memo, useState, useEffect, VFC } from "react"
 import { useLocation } from "react-router-dom"
 
 function Detail() {

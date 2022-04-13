@@ -60,11 +60,11 @@ export default function ClubList() {
   // this useEffect will run once
   // similar to componentDidMount()
   useEffect(() => {
-    fetch("http://localhost:3100/clubs", { method: "GET" })
+    // fetch("http://localhost:3100/clubs", { method: "GET" })
+    // fetch("http://127.0.0.1:8888/", { method: "GET" })
+    fetch("https://golfbuy-api.herokuapp.com/", { method: "GET" })
       .then(res => res.json(),
       )
-      // .then(data => {
-      //   this.setState({data})},
       .then(data => {
           setItems(data);
           console.log(items)
@@ -78,10 +78,6 @@ export default function ClubList() {
         }
       )
   }, [])
-
-  useEffect(() => {
-    console.log(items)
-  }, [items])
 
   return (
     <ImageList sx={{ height: 450,
