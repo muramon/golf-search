@@ -60,9 +60,7 @@ export default function ClubList() {
   // this useEffect will run once
   // similar to componentDidMount()
   useEffect(() => {
-    // fetch("http://localhost:3100/clubs", { method: "GET" })
-    // fetch("http://127.0.0.1:8888/", { method: "GET" })
-    fetch("https://golfbuy-api.herokuapp.com/", { method: "GET" })
+    fetch("http://localhost:3100/clubs", { method: "GET" })
       .then(res => res.json(),
       )
       .then(data => {
@@ -84,7 +82,7 @@ export default function ClubList() {
       display: "grid",
       gridTemplateColumns:  "repeat(4, 1fr)"}}>
       <ImageListItem key="Subheader" cols={2}>
-        <ListSubheader component="div">December</ListSubheader>
+        <ListSubheader component="div"></ListSubheader>
       </ImageListItem>
       {items.map((item) => (
         <ImageListItem key={item.rank}>
@@ -103,7 +101,10 @@ export default function ClubList() {
                 aria-label={`info about ${item.itemPrice}`}
                 onClick={() => navigate("detail", { state: { src: item.mediumImageUrls, 
                                                              price: item.itemPrice,
-                                                             title: item.itemName } })}
+                                                             title: item.itemName,
+                                                             caption: item.itemCaption,
+                                                             affiliateurl: item.affiliateUrl,
+                                                             rank: item.rank} })}
               >
                 <ArrowCircleRightSharpIcon />
               </IconButton>
