@@ -11,10 +11,21 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import SportsGolfIcon from '@mui/icons-material/SportsGolf';
 import Copyright from './components/Copyright'
-import Search from './components/Search'
 import ClubList from './components/Clubs'
+import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import Paper from '@mui/material/Paper';
+import IconButton from '@mui/material/IconButton';
+import SearchIcon from '@mui/icons-material/Search';
+import TextField from '@mui/material/TextField';
+import Search from './components/Search';
+import ImageList from '@mui/material/ImageList';
+import ImageListItem from '@mui/material/ImageListItem';
+import ImageListItemBar from '@mui/material/ImageListItemBar';
+import ListSubheader from '@mui/material/ListSubheader';
+import ArrowCircleRightSharpIcon from '@mui/icons-material/ArrowCircleRightSharp';
 
-export default function App() {
+const App = () => {
   //primaryとsecondaryで、色を指定します
   const myTheme = createTheme({
     palette: {
@@ -27,6 +38,46 @@ export default function App() {
     },
   });
 
+  const [searchTerm, setSearchTerm] = React.useState('');
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+    console.log(searchTerm)
+  };
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+  const [items, setItems] = useState([{"rank":22,"itemName":"更新前【カスタム】2022 キャロウェイゴルフ ROGUE ST MAX IRONS ローグ ST MAX アイアン【 日本仕様】5本セット(#6〜9,PW)","catchcopy":"","mediumImageUrls":"https:\\/\\/thumbnail.image.rakuten.co.jp\\/@0_mall\\/kotobukigolf\\/cabinet\\/image8\\/10052619-1.jpg?_ex=128x128","affiliateUrl":"https:\\/\\/hb.afl.rakuten.co.jp\\/hgc\\/g00plmsa.i98ricf1.g00plmsa.i98rj2b3\\/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fkotobukigolf%2F10052619%2F","affiliateRate":"4.0","itemCaption":"2022年3月発売 メーカー希望小売価格はメーカーサイトに基づいて掲載しています※特別価格の為、売り切れの際はご了承お願いいたします。","itemPrice":"105600","reviewAverage":"0.0"}]);
+  const handleSearchSubmit = async () => {
+    console.log("searching now")
+    // const searched_items = Search({searchTerm});
+    // console.log(searched_items)
+      // fetch("https://golfbuy-api.herokuapp.com/", { method: "GET" })
+      fetch("http://localhost:8890/search", { 
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            term: {searchTerm},
+          })
+        })
+        .then(res => res.json(),
+        )
+        .then(data => {
+            console.log(data)
+            setItems(data);
+            console.log(items)
+          },
+          // Note: it's important to handle errors here
+          // instead of a catch() block so that we don't swallow
+          // exceptions from actual bugs in components.
+          (error) => {
+            // setIsLoaded(true);
+            setError(error);
+            console.log(error)
+          }
+        )
+  };
+
   return (
     <ThemeProvider theme={myTheme}>
       <CssBaseline />
@@ -34,7 +85,7 @@ export default function App() {
         <Toolbar>
           <SportsGolfIcon sx={{ mr: 2 }} />
           <Typography variant="h6" color="inherit" noWrap>
-            ゴルフサーチ
+            ゴルバイ
           </Typography>
         </Toolbar>
       </AppBar>
@@ -66,9 +117,65 @@ export default function App() {
               spacing={2}
               justifyContent="center"
             >
-              <Search></Search>
+              <Paper
+                component="form"
+                sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 400 }}
+              >
+                <IconButton sx={{ p: '10px' }} aria-label="menu">
+                  <SportsGolfIcon />
+                </IconButton>
+                {/* <InputBase
+                  sx={{ ml: 1, flex: 1 }}
+                  placeholder="Search Golf Clubs"
+                  inputProps={{ 'aria-label': 'search golf clubs' }}
+                /> */}
+                <TextField fullWidth 
+                  id="outlined-basic" 
+                  label="search golf clubs" 
+                  variant="standard" 
+                  size="small" 
+                  value={searchTerm}
+                  onChange={handleChange}/>
+                <IconButton type="button" sx={{ p: '10px' }} aria-label="search" onClick={handleSearchSubmit}>
+                  <SearchIcon />
+                </IconButton>
+              </Paper>
             </Stack>
-            <ClubList />
+            <ImageList sx={{ height: 450,
+              display: "grid",
+              gridTemplateColumns:  "repeat(4, 1fr)"}}>
+              <ImageListItem key="Subheader" cols={2}>
+                <ListSubheader component="div"></ListSubheader>
+              </ImageListItem>
+              {items.map((item) => (
+                <ImageListItem key={item.rank}>
+                  <img
+                    src={item.mediumImageUrls}
+                    srcSet={item.mediumImageUrls}
+                    alt={item.itemName}
+                    loading="lazy"
+                  />
+                  <ImageListItemBar
+                    title={item.itemName}
+                    subtitle={`${item.itemPrice} 円`}
+                    actionIcon={
+                      <IconButton
+                        sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
+                        aria-label={`info about ${item.itemPrice}`}
+                        onClick={() => navigate("detail", { state: { src: item.mediumImageUrls, 
+                                                                    price: item.itemPrice,
+                                                                    title: item.itemName,
+                                                                    caption: item.itemCaption,
+                                                                    affiliateurl: item.affiliateUrl,
+                                                                    rank: item.rank} })}
+                      >
+                        <ArrowCircleRightSharpIcon />
+                      </IconButton>
+                    }
+                  />
+                </ImageListItem>
+              ))}
+            </ImageList>
           </Container>
         </Box>
         
@@ -90,3 +197,5 @@ export default function App() {
     </ThemeProvider>
   );
 }
+
+export default App;
