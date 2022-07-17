@@ -18,7 +18,7 @@ import Paper from '@mui/material/Paper';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import TextField from '@mui/material/TextField';
-import Search from './components/Search';
+// import Search from './components/Search';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
@@ -38,20 +38,61 @@ const App = () => {
     },
   });
 
-  const [searchTerm, setSearchTerm] = React.useState('');
+  const [searchTerm, setSearchTerm] = useState('');
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
+    console.log('event target value')
+    console.log(event.target.value)
     console.log(searchTerm)
   };
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const [items, setItems] = useState([{"rank":22,"itemName":"更新前【カスタム】2022 キャロウェイゴルフ ROGUE ST MAX IRONS ローグ ST MAX アイアン【 日本仕様】5本セット(#6〜9,PW)","catchcopy":"","mediumImageUrls":"https:\\/\\/thumbnail.image.rakuten.co.jp\\/@0_mall\\/kotobukigolf\\/cabinet\\/image8\\/10052619-1.jpg?_ex=128x128","affiliateUrl":"https:\\/\\/hb.afl.rakuten.co.jp\\/hgc\\/g00plmsa.i98ricf1.g00plmsa.i98rj2b3\\/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fkotobukigolf%2F10052619%2F","affiliateRate":"4.0","itemCaption":"2022年3月発売 メーカー希望小売価格はメーカーサイトに基づいて掲載しています※特別価格の為、売り切れの際はご了承お願いいたします。","itemPrice":"105600","reviewAverage":"0.0"}]);
+  const [items, setItems] = useState([{"rank":22,"itemName":"更新前【カスタム】2022 キャロウェイゴルフ ROGUE ST MAX IRONS ローグ ST MAX アイアン【 日本仕様】5本セット(#6〜9,PW)","catchcopy":"","mediumImageUrls":"https:\\/\\/thumbnail.image.rakuten.co.jp\\/@0_mall\\/kotobukigolf\\/cabinet\\/image8\\/10052619-1.jpg?_ex=128x128","affiliateUrl":"https:\\/\\/hb.afl.rakuten.co.jp\\/hgc\\/g00plmsa.i98ricf1.g00plmsa.i98rj2b3\\/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fkotobukigolf%2F10052619%2F","affiliateRate":"4.0","itemCaption":"2022年3月発売 メーカー希望小売価格はメーカーサイトに基づいて掲載しています※特別価格の為、売り切れの際はご了承お願いいたします。","itemPrice":"105600","reviewAverage":"0.0"}])
+  
+  useEffect ( () => {
+    console.log('reload func')
+    const keepterm = sessionStorage.getItem('term')
+    console.log('useeffect')
+    console.log(keepterm)
+    fetch("http://localhost:8990/search", { 
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            term: {'searchTerm': keepterm},
+          })
+        })
+        .then(res => res.json(),
+        )
+        .then(data => {
+            console.log(data)
+            setItems(data);
+            console.log('session strage search')
+            console.log(sessionStorage.getItem('term'))
+            console.log('session strage search')
+            console.log('searched')
+            console.log(items)
+          },
+          // Note: it's important to handle errors here
+          // instead of a catch() block so that we don't swallow
+          // exceptions from actual bugs in components.
+          (error) => {
+            // setIsLoaded(true);
+            setError(error);
+            console.log(error)
+          }
+        )
+  } ,[]);
+  
+  console.log(items)
   const handleSearchSubmit = async () => {
     console.log("searching now")
+    sessionStorage.setItem('term', searchTerm)
     // const searched_items = Search({searchTerm});
     // console.log(searched_items)
       // fetch("https://golfbuy-api.herokuapp.com/", { method: "GET" })
-      fetch("http://localhost:8890/search", { 
+      fetch("http://localhost:8990/search", { 
           method: "POST",
           headers: {
             'Content-Type': 'application/json'
@@ -65,6 +106,13 @@ const App = () => {
         .then(data => {
             console.log(data)
             setItems(data);
+            // var results = localStorage.setItem('results', 'data');
+            // sessionStorage.setItem('term', searchTerm)
+            // // console.log('session strage')
+            // // console.log(sessionStorage.getItem('term'))
+            // // console.log('session strage')
+            // // // console.log(results)
+            // // console.log('searched')
             console.log(items)
           },
           // Note: it's important to handle errors here
@@ -109,7 +157,6 @@ const App = () => {
               ゴルフクラブをまとめて検索
             </Typography>
             <Typography variant="h5" align="center" color="text.secondary" paragraph>
-              comming soon...
             </Typography>
             <Stack
               sx={{ pt: 4 }}
