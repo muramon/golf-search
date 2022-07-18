@@ -25,25 +25,31 @@ function Detail() {
                         <img src={selectId.src} alt={selectId.title} height={256}/>
                     </Box>
                     <Box padding={1}>
-                        <Typography variant="subtitle1" component="h5">
-                            {selectId.title}
+                        <Typography variant="h5" component="h5">
+                            <b>{selectId.title}</b>
+                        </Typography>
+                    </Box>
+                    <Box padding={1} sx={{ textAlign: 'left' }}>
+                        <Typography variant="h5" component="h5">
+                            <b style={{color: "red"}}>¥{selectId.price}円 (税込)</b>
+                        </Typography>
+                    </Box>
+                    <Box padding={1} sx={{ textAlign: 'left' }}>
+                        <Typography variant="body1" component="p">
+                            <a href={selectId.affiliateurl}>購入はこちら</a>
+                        </Typography>
+                    </Box>
+                    <Box padding={1} sx={{ textAlign: 'left' }}>
+                        <Typography variant="h4" component="h4">
+                            <hr color="#D3D3D3"></hr>
+                            <b>商品の説明</b>
                         </Typography>
                     </Box>
                     <Box padding={1}>
                         <Typography variant="body2" component="p">
                             {selectId.caption}
                         </Typography>
-                    </Box>
-                    <Box padding={1} sx={{ textAlign: 'right' }}>
-                        <Typography variant="h5" component="h5">
-                            {selectId.price}円
-                        </Typography>
-                    </Box>
-                    <Box padding={1} sx={{ textAlign: 'right' }}>
-                        <Typography variant="body1" component="p">
-                            <a href={selectId.affiliateurl}>購入はこちら</a>
-                        </Typography>
-                    </Box>
+                    </Box>                
                 </Paper>
             </Grid>
         </div>
