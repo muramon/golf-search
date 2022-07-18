@@ -11,6 +11,7 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import SportsGolfIcon from '@mui/icons-material/SportsGolf';
 import Copyright from './components/Copyright'
+import Credit from './components/Credit'
 import ClubList from './components/Clubs'
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
@@ -47,14 +48,40 @@ const App = () => {
   };
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const [items, setItems] = useState([{"rank":22,"itemName":"更新前【カスタム】2022 キャロウェイゴルフ ROGUE ST MAX IRONS ローグ ST MAX アイアン【 日本仕様】5本セット(#6〜9,PW)","catchcopy":"","mediumImageUrls":"https:\\/\\/thumbnail.image.rakuten.co.jp\\/@0_mall\\/kotobukigolf\\/cabinet\\/image8\\/10052619-1.jpg?_ex=128x128","affiliateUrl":"https:\\/\\/hb.afl.rakuten.co.jp\\/hgc\\/g00plmsa.i98ricf1.g00plmsa.i98rj2b3\\/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fkotobukigolf%2F10052619%2F","affiliateRate":"4.0","itemCaption":"2022年3月発売 メーカー希望小売価格はメーカーサイトに基づいて掲載しています※特別価格の為、売り切れの際はご了承お願いいたします。","itemPrice":"105600","reviewAverage":"0.0"}])
-  
+
+  const [items, setItems] = useState([{"rank":22,"itemName":"","catchcopy":"","mediumImageUrls":"","affiliateUrl":"","affiliateRate":"4.0","itemCaption":"","itemPrice":"","reviewAverage":""}])
+  useEffect(() => {
+    // fetch("http://localhost:8990/search", {
+    fetch("https://golfbuy-api.herokuapp.com/search", { method: "GET" })
+          .then(res => res.json(),
+          )
+          .then(data => {
+              console.log(data)
+              setItems(data);
+              console.log('session strage search')
+              console.log(sessionStorage.getItem('term'))
+              console.log('session strage search')
+              console.log('searched')
+              console.log(items)
+            },
+            // Note: it's important to handle errors here
+            // instead of a catch() block so that we don't swallow
+            // exceptions from actual bugs in components.
+            (error) => {
+              // setIsLoaded(true);
+              setError(error);
+              console.log(error)
+            }
+          )
+    } ,[]);
+
   useEffect ( () => {
     console.log('reload func')
     const keepterm = sessionStorage.getItem('term')
     console.log('useeffect')
     console.log(keepterm)
-    fetch("http://localhost:8990/search", { 
+    fetch("https://golfbuy-api.herokuapp.com/search", {
+    // fetch("http://localhost:8990/search", { 
           method: "POST",
           headers: {
             'Content-Type': 'application/json'
@@ -91,8 +118,8 @@ const App = () => {
     sessionStorage.setItem('term', searchTerm)
     // const searched_items = Search({searchTerm});
     // console.log(searched_items)
-      // fetch("https://golfbuy-api.herokuapp.com/", { method: "GET" })
-      fetch("http://localhost:8990/search", { 
+    fetch("https://golfbuy-api.herokuapp.com/search", {
+    // fetch("http://localhost:8990/search", { 
           method: "POST",
           headers: {
             'Content-Type': 'application/json'
@@ -204,7 +231,7 @@ const App = () => {
                   />
                   <ImageListItemBar
                     title={item.itemName}
-                    subtitle={`${item.itemPrice} 円`}
+                    subtitle={`¥ ${item.itemPrice} 円`}
                     actionIcon={
                       <IconButton
                         sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
@@ -238,6 +265,7 @@ const App = () => {
           component="p"
         >
         </Typography>
+        <Credit />
         <Copyright />
       </Box>
       {/* End footer */}
