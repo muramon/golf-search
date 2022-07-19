@@ -11,10 +11,22 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import SportsGolfIcon from '@mui/icons-material/SportsGolf';
 import Copyright from './components/Copyright'
-import Search from './components/Search'
+import Credit from './components/Credit'
 import ClubList from './components/Clubs'
+import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import Paper from '@mui/material/Paper';
+import IconButton from '@mui/material/IconButton';
+import SearchIcon from '@mui/icons-material/Search';
+import TextField from '@mui/material/TextField';
+// import Search from './components/Search';
+import ImageList from '@mui/material/ImageList';
+import ImageListItem from '@mui/material/ImageListItem';
+import ImageListItemBar from '@mui/material/ImageListItemBar';
+import ListSubheader from '@mui/material/ListSubheader';
+import ArrowCircleRightSharpIcon from '@mui/icons-material/ArrowCircleRightSharp';
 
-export default function App() {
+const App = () => {
   //primaryとsecondaryで、色を指定します
   const myTheme = createTheme({
     palette: {
@@ -27,6 +39,120 @@ export default function App() {
     },
   });
 
+  const [searchTerm, setSearchTerm] = useState('');
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+    console.log('event target value')
+    console.log(event.target.value)
+    console.log(searchTerm)
+  };
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+
+  const [items, setItems] = useState([{"rank":22,"itemName":"","catchcopy":"","mediumImageUrls":"","affiliateUrl":"","affiliateRate":"4.0","itemCaption":"","itemPrice":"","reviewAverage":""}])
+  useEffect(() => {
+    // fetch("http://localhost:8990/search", {
+    fetch("https://golfbuy-api.herokuapp.com/search", { method: "GET" })
+          .then(res => res.json(),
+          )
+          .then(data => {
+              console.log(data)
+              setItems(data);
+              console.log('session strage search')
+              console.log(sessionStorage.getItem('term'))
+              console.log('session strage search')
+              console.log('searched')
+              console.log(items)
+            },
+            // Note: it's important to handle errors here
+            // instead of a catch() block so that we don't swallow
+            // exceptions from actual bugs in components.
+            (error) => {
+              // setIsLoaded(true);
+              setError(error);
+              console.log(error)
+            }
+          )
+    } ,[]);
+
+  useEffect ( () => {
+    console.log('reload func')
+    const keepterm = sessionStorage.getItem('term')
+    console.log('useeffect')
+    console.log(keepterm)
+    fetch("https://golfbuy-api.herokuapp.com/search", {
+    // fetch("http://localhost:8990/search", { 
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            term: {'searchTerm': keepterm},
+          })
+        })
+        .then(res => res.json(),
+        )
+        .then(data => {
+            console.log(data)
+            setItems(data);
+            console.log('session strage search')
+            console.log(sessionStorage.getItem('term'))
+            console.log('session strage search')
+            console.log('searched')
+            console.log(items)
+          },
+          // Note: it's important to handle errors here
+          // instead of a catch() block so that we don't swallow
+          // exceptions from actual bugs in components.
+          (error) => {
+            // setIsLoaded(true);
+            setError(error);
+            console.log(error)
+          }
+        )
+  } ,[]);
+  
+  console.log(items)
+  const handleSearchSubmit = async () => {
+    console.log("searching now")
+    sessionStorage.setItem('term', searchTerm)
+    // const searched_items = Search({searchTerm});
+    // console.log(searched_items)
+    fetch("https://golfbuy-api.herokuapp.com/search", {
+    // fetch("http://localhost:8990/search", { 
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            term: {searchTerm},
+          })
+        })
+        .then(res => res.json(),
+        )
+        .then(data => {
+            console.log(data)
+            setItems(data);
+            // var results = localStorage.setItem('results', 'data');
+            // sessionStorage.setItem('term', searchTerm)
+            // // console.log('session strage')
+            // // console.log(sessionStorage.getItem('term'))
+            // // console.log('session strage')
+            // // // console.log(results)
+            // // console.log('searched')
+            console.log(items)
+          },
+          // Note: it's important to handle errors here
+          // instead of a catch() block so that we don't swallow
+          // exceptions from actual bugs in components.
+          (error) => {
+            // setIsLoaded(true);
+            setError(error);
+            console.log(error)
+          }
+        )
+  };
+
   return (
     <ThemeProvider theme={myTheme}>
       <CssBaseline />
@@ -34,7 +160,7 @@ export default function App() {
         <Toolbar>
           <SportsGolfIcon sx={{ mr: 2 }} />
           <Typography variant="h6" color="inherit" noWrap>
-            ゴルフサーチ
+            ゴルバイ
           </Typography>
         </Toolbar>
       </AppBar>
@@ -58,7 +184,6 @@ export default function App() {
               ゴルフクラブをまとめて検索
             </Typography>
             <Typography variant="h5" align="center" color="text.secondary" paragraph>
-              comming soon...
             </Typography>
             <Stack
               sx={{ pt: 4 }}
@@ -66,9 +191,65 @@ export default function App() {
               spacing={2}
               justifyContent="center"
             >
-              <Search></Search>
+              <Paper
+                component="form"
+                sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 400 }}
+              >
+                <IconButton sx={{ p: '10px' }} aria-label="menu">
+                  <SportsGolfIcon />
+                </IconButton>
+                {/* <InputBase
+                  sx={{ ml: 1, flex: 1 }}
+                  placeholder="Search Golf Clubs"
+                  inputProps={{ 'aria-label': 'search golf clubs' }}
+                /> */}
+                <TextField fullWidth 
+                  id="outlined-basic" 
+                  label="search golf clubs" 
+                  variant="standard" 
+                  size="small" 
+                  value={searchTerm}
+                  onChange={handleChange}/>
+                <IconButton type="button" sx={{ p: '10px' }} aria-label="search" onClick={handleSearchSubmit}>
+                  <SearchIcon />
+                </IconButton>
+              </Paper>
             </Stack>
-            <ClubList />
+            <ImageList sx={{ height: 450,
+              display: "grid",
+              gridTemplateColumns:  "repeat(4, 1fr)"}}>
+              <ImageListItem key="Subheader" cols={2}>
+                <ListSubheader component="div"></ListSubheader>
+              </ImageListItem>
+              {items.map((item) => (
+                <ImageListItem key={item.rank}>
+                  <img
+                    src={item.mediumImageUrls}
+                    srcSet={item.mediumImageUrls}
+                    alt={item.itemName}
+                    loading="lazy"
+                  />
+                  <ImageListItemBar
+                    title={item.itemName}
+                    subtitle={`¥ ${item.itemPrice} 円`}
+                    actionIcon={
+                      <IconButton
+                        sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
+                        aria-label={`info about ${item.itemPrice}`}
+                        onClick={() => navigate("detail", { state: { src: item.mediumImageUrls, 
+                                                                    price: item.itemPrice,
+                                                                    title: item.itemName,
+                                                                    caption: item.itemCaption,
+                                                                    affiliateurl: item.affiliateUrl,
+                                                                    rank: item.rank} })}
+                      >
+                        <ArrowCircleRightSharpIcon />
+                      </IconButton>
+                    }
+                  />
+                </ImageListItem>
+              ))}
+            </ImageList>
           </Container>
         </Box>
         
@@ -84,9 +265,12 @@ export default function App() {
           component="p"
         >
         </Typography>
+        <Credit />
         <Copyright />
       </Box>
       {/* End footer */}
     </ThemeProvider>
   );
 }
+
+export default App;
