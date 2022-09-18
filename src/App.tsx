@@ -10,6 +10,9 @@ import CssBaseline from '@mui/material/CssBaseline';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import SportsGolfIcon from '@mui/icons-material/SportsGolf';
+import MenuIcon from '@mui/icons-material/Menu';
+import HomeIcon from '@mui/icons-material/Home';
+import InfoIcon from '@mui/icons-material/Info';
 import Copyright from './components/Copyright'
 import Credit from './components/Credit'
 import ClubList from './components/Clubs'
@@ -25,6 +28,7 @@ import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
 import ListSubheader from '@mui/material/ListSubheader';
 import ArrowCircleRightSharpIcon from '@mui/icons-material/ArrowCircleRightSharp';
+import Appbar from './components/Appbar';
 
 const App = () => {
   //primaryとsecondaryで、色を指定します
@@ -153,17 +157,16 @@ const App = () => {
         )
   };
 
+  const [drawerOpen, setDrawerOpen] = React.useState(false);
+  // 追加: Drawer の開閉
+  const handleDrawerToggle = () => {
+    setDrawerOpen(!drawerOpen); // Drawer の開閉状態を反転
+  };
+
   return (
     <ThemeProvider theme={myTheme}>
       <CssBaseline />
-      <AppBar position="relative" color="primary">
-        <Toolbar>
-          <SportsGolfIcon sx={{ mr: 2 }} />
-          <Typography variant="h6" color="inherit" noWrap>
-            ゴルバイ
-          </Typography>
-        </Toolbar>
-      </AppBar>
+      <Appbar/>
       <main>
         {/* Hero unit */}
         <Box
@@ -228,24 +231,22 @@ const App = () => {
                     srcSet={item.mediumImageUrls}
                     alt={item.itemName}
                     loading="lazy"
+                    onClick={() => navigate("detail", { state: { src: item.mediumImageUrls, 
+                      price: item.itemPrice,
+                      title: item.itemName,
+                      caption: item.itemCaption,
+                      affiliateurl: item.affiliateUrl,
+                      rank: item.rank} })}
                   />
                   <ImageListItemBar
                     title={item.itemName}
                     subtitle={`¥ ${item.itemPrice} 円`}
-                    actionIcon={
-                      <IconButton
-                        sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                        aria-label={`info about ${item.itemPrice}`}
-                        onClick={() => navigate("detail", { state: { src: item.mediumImageUrls, 
-                                                                    price: item.itemPrice,
-                                                                    title: item.itemName,
-                                                                    caption: item.itemCaption,
-                                                                    affiliateurl: item.affiliateUrl,
-                                                                    rank: item.rank} })}
-                      >
-                        <ArrowCircleRightSharpIcon />
-                      </IconButton>
-                    }
+                    onClick={() => navigate("detail", { state: { src: item.mediumImageUrls, 
+                      price: item.itemPrice,
+                      title: item.itemName,
+                      caption: item.itemCaption,
+                      affiliateurl: item.affiliateUrl,
+                      rank: item.rank} })}
                   />
                 </ImageListItem>
               ))}
