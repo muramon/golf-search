@@ -231,24 +231,22 @@ const App = () => {
                     srcSet={item.mediumImageUrls}
                     alt={item.itemName}
                     loading="lazy"
+                    onClick={() => navigate("detail", { state: { src: item.mediumImageUrls, 
+                      price: item.itemPrice,
+                      title: item.itemName,
+                      caption: item.itemCaption,
+                      affiliateurl: item.affiliateUrl,
+                      rank: item.rank} })}
                   />
                   <ImageListItemBar
                     title={item.itemName}
                     subtitle={`¥ ${item.itemPrice} 円`}
-                    actionIcon={
-                      <IconButton
-                        sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                        aria-label={`info about ${item.itemPrice}`}
-                        onClick={() => navigate("detail", { state: { src: item.mediumImageUrls, 
-                                                                    price: item.itemPrice,
-                                                                    title: item.itemName,
-                                                                    caption: item.itemCaption,
-                                                                    affiliateurl: item.affiliateUrl,
-                                                                    rank: item.rank} })}
-                      >
-                        <ArrowCircleRightSharpIcon />
-                      </IconButton>
-                    }
+                    onClick={() => navigate("detail", { state: { src: item.mediumImageUrls, 
+                      price: item.itemPrice,
+                      title: item.itemName,
+                      caption: item.itemCaption,
+                      affiliateurl: item.affiliateUrl,
+                      rank: item.rank} })}
                   />
                 </ImageListItem>
               ))}

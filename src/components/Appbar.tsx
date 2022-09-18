@@ -5,6 +5,8 @@ import SportsGolfIcon from '@mui/icons-material/SportsGolf';
 import MenuIcon from '@mui/icons-material/Menu';
 import HomeIcon from '@mui/icons-material/Home';
 import InfoIcon from '@mui/icons-material/Info';
+import MailIcon from '@mui/icons-material/Mail';
+import InstagramIcon from '@mui/icons-material/Instagram';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -49,13 +51,13 @@ return (
             </ListItem>
             <ListItem>
                 <ListItemIcon>
-                <InfoIcon  onClick={() => navigate("/Contact")}/>
+                <MailIcon  onClick={() => navigate("/Contact")}/>
                 </ListItemIcon>
                 <ListItemText primary="Contact" onClick={() => navigate("/Contact")}/>
             </ListItem>
             <ListItem>
                 <ListItemIcon>
-                <InfoIcon />
+                <InstagramIcon />
                 </ListItemIcon>
                 <ListItemText primary="Instagram"/>
             </ListItem>
