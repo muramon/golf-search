@@ -28,11 +28,7 @@ import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
 import ListSubheader from '@mui/material/ListSubheader';
 import ArrowCircleRightSharpIcon from '@mui/icons-material/ArrowCircleRightSharp';
-import Drawer from '@mui/material/Drawer';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
+import Appbar from './components/Appbar';
 
 const App = () => {
   //primaryとsecondaryで、色を指定します
@@ -170,45 +166,7 @@ const App = () => {
   return (
     <ThemeProvider theme={myTheme}>
       <CssBaseline />
-      <AppBar position="relative" color="primary">
-      <Drawer variant="temporary"
-        open={drawerOpen}
-        onClose={handleDrawerToggle}
-        sx={{
-          '& .MuiDrawer-paper': { boxSizing: 'border-box', width: 240 },
-        }}
-      >
-        <List>
-          <ListItem>
-            <ListItemIcon>
-              <InfoIcon onClick={() => navigate("about")}/>
-            </ListItemIcon>
-            <ListItemText primary="About" onClick={() => navigate("About")}/>
-          </ListItem>
-          <ListItem>
-            <ListItemIcon>
-              <InfoIcon />
-            </ListItemIcon>
-            <ListItemText primary="Contact"/>
-          </ListItem>
-          <ListItem>
-            <ListItemIcon>
-              <InfoIcon />
-            </ListItemIcon>
-            <ListItemText primary="Instagram"/>
-          </ListItem>
-        </List>
-      </Drawer>
-        <Toolbar>
-          <IconButton edge="start" color="secondary" aria-label="menu" sx={{ mr: 2 }} onClick={handleDrawerToggle}>
-            <MenuIcon />
-          </IconButton>
-          <SportsGolfIcon sx={{ mr: 2 }} />
-          <Typography variant="h6" color="inherit" noWrap>
-            ゴルバイ
-          </Typography>
-        </Toolbar>
-      </AppBar>
+      <Appbar/>
       <main>
         {/* Hero unit */}
         <Box

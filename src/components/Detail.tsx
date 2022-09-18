@@ -21,6 +21,7 @@ import IconButton from '@mui/material/IconButton';
 import { useNavigate } from 'react-router-dom';
 import Copyright from './Copyright'
 import Credit from './Credit'
+import Appbar from './Appbar';
 
 
 function Detail() {
@@ -58,51 +59,7 @@ function Detail() {
                                                              
     return (
         <ThemeProvider theme={myTheme}>
-        <AppBar position="relative" color="primary">
-        <Drawer variant="temporary"
-            open={drawerOpen}
-            onClose={handleDrawerToggle}
-            sx={{
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: 240 },
-            }}
-        >
-            <List>
-            <ListItem>
-                <ListItemIcon>
-                <HomeIcon onClick={() => navigate("gallery")}/>
-                </ListItemIcon>
-                <ListItemText primary="Home" onClick={() => navigate("/")}/>
-            </ListItem>
-            <ListItem>
-                <ListItemIcon>
-                <InfoIcon onClick={() => navigate("about")}/>
-                </ListItemIcon>
-                <ListItemText primary="About" onClick={() => navigate("/About")}/>
-            </ListItem>
-            <ListItem>
-                <ListItemIcon>
-                <InfoIcon />
-                </ListItemIcon>
-                <ListItemText primary="Contact"/>
-            </ListItem>
-            <ListItem>
-                <ListItemIcon>
-                <InfoIcon />
-                </ListItemIcon>
-                <ListItemText primary="Instagram"/>
-            </ListItem>
-            </List>
-        </Drawer>
-            <Toolbar>
-            <IconButton edge="start" color="secondary" aria-label="menu" sx={{ mr: 2 }} onClick={handleDrawerToggle}>
-                <MenuIcon />
-            </IconButton>
-            <SportsGolfIcon sx={{ mr: 2 }} />
-            <Typography variant="h6" color="inherit" noWrap>
-                ゴルバイ
-            </Typography>
-            </Toolbar>
-        </AppBar>
+        <Appbar/>
             <Grid container direction="column" alignItems="center">
                 <Paper elevation={0}>
                     <Box padding={5} sx={{ textAlign: 'center' }}>
