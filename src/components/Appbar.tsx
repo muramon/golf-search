@@ -55,12 +55,12 @@ return (
                 </ListItemIcon>
                 <ListItemText primary="Contact" onClick={() => navigate("/Contact")}/>
             </ListItem>
-            <ListItem>
+            {/* <ListItem>
                 <ListItemIcon>
                 <InstagramIcon />
                 </ListItemIcon>
                 <ListItemText primary="Instagram"/>
-            </ListItem>
+            </ListItem> */}
             </List>
         </Drawer>
         <Toolbar>
