@@ -29,6 +29,9 @@ import ImageListItemBar from '@mui/material/ImageListItemBar';
 import ListSubheader from '@mui/material/ListSubheader';
 import ArrowCircleRightSharpIcon from '@mui/icons-material/ArrowCircleRightSharp';
 import Appbar from './components/Appbar';
+import { analytics } from "./firebase_config";
+import { logEvent } from "firebase/analytics";
+
 
 const App = () => {
   //primaryとsecondaryで、色を指定します
@@ -67,6 +70,7 @@ const App = () => {
               console.log('session strage search')
               console.log('searched')
               console.log(items)
+              logEvent(analytics, 'screen_view');
             },
             // Note: it's important to handle errors here
             // instead of a catch() block so that we don't swallow
